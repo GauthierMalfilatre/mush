@@ -54,6 +54,8 @@ void process_line(data_t *data, char **line)
 static int show_prompt(data_t *data)
 {
     if (isatty(0)) {
+        my_printf("[%s%d"WHITE"] ", data->last_code ? RED : GREEN,
+            data->last_code);
         my_printf(BPROMPT);
     }
     return 1;

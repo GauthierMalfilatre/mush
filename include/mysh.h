@@ -21,8 +21,13 @@
     #include <sys/types.h>
     #include <signal.h>
     #define PROMPT "$> "
-    #define RP data->last_code, data->username, data->host, data->current_dir
-    #define BPROMPT "[%d] %s@%s:%s$ ", RP
+    #define VIOLET "\x1b[38;2;126;0;141m"
+    #define CYAN "\x1b[38;2;43;255;255m"
+    #define WHITE "\x1b[1;37m"
+    #define GREEN "\e[1;32m"
+    #define RED "\e[1;31m"
+    #define RP data->username, data->host, data->current_dir
+    #define BPROMPT CYAN"%s@%s"WHITE":"VIOLET"%s"WHITE"$ ", RP
     #define ERRORCODE -1
     #define OKCODE 0
     #define EXITCODE 69
