@@ -48,6 +48,9 @@ typedef struct data_s {
     char *last_dir;
 } data_t;
 
+/* Parse line */
+char **get_until_semicolon(char **base);
+
 /* Data */
 data_t *init_data(char **env);
 char *get_hostname(void);

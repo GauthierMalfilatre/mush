@@ -11,6 +11,11 @@
 // Mini fprintf
 int mini_fprintf(int fd, const char *format, ...);
 // libmy
+int word_index(char **array, char *to_find);
+int len_words_in_word_array(char **array, char *key);
+int is_word_in_word_array(char **array, char *to_find);
+char **my_dup_word_array_until(char **array, char *to_find);
+char **my_ndup_word_array(char **array, int len);
 int my_len_word_array(char **array);
 int ifree(void *to_free);
 char **my_strsplit(const char *src, const char delim);

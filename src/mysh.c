@@ -50,6 +50,21 @@ void process_line(data_t *data, char **line)
     }
 }
 
+void pre_process_line(data_t *data, char **line)
+{
+    int count = 1 + len_words_in_word_array(line, ";");
+    char **temp = (char **) 0;
+    int offset = 0;
+
+    for (int i = 0; i < count; ++i) {
+        temp = my_dup_word_array_until(&line[offset], ";");
+        process_line(data, temp);
+        offset += my_len_word_array(temp) + 1;
+        my_free_word_array(temp);
+    }
+    return;
+}
+
 static int show_prompt(data_t *data)
 {
     if (isatty(0)) {
@@ -76,7 +91,7 @@ void mysh(data_t *data)
             break;
         }
         line = my_str_to_word_array(buffer);
-        process_line(data, line);
+        pre_process_line(data, line);
         my_free_word_array(line);
     }
     free(buffer);

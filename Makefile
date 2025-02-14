@@ -16,6 +16,7 @@ SRC =	src/mysh.c \
 		src/env/unsetenv.c \
 		src/data/init.c \
 		src/data/get_hostname.c \
+		src/line/semicolon.c \
 		src/error.c \
 		src/child.c
 

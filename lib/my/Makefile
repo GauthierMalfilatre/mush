@@ -69,6 +69,10 @@ SRC = 	my_strcat.c \
 	printf/utils/flag_e.c \
 	printf/utils/flag_g.c \
 	printf/utils/is_nan.c \
+	my_ndup_word_array.c \
+	is_word_in_word_array.c \
+	my_word_index.c \
+	len_word_in_word_array.c \
 	printf/utils/add_width.c
 
 OBJ = $(SRC:.c=.o)
