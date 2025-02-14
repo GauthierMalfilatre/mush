@@ -15,7 +15,7 @@ data_t *init_data(char **env)
     }
     new->env = env_to_list(env);
     new->username = find_in_env(new->env, "USER");
-    new->host = (char *) 0;
+    new->host = get_hostname();
     new->last_dir = (char *) 0;
     new->current_dir = getcwd(0, 0);
     new->last_code = 0;
@@ -26,6 +26,7 @@ void destroy_data(data_t *data)
 {
     destroy_env(data->env);
     ifree(data->username);
+    ifree(data->host);
     ifree(data->last_dir);
     ifree(data->current_dir);
     ifree(data);

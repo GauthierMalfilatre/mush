@@ -21,7 +21,7 @@
     #include <sys/types.h>
     #include <signal.h>
     #define PROMPT "$> "
-    #define RP data->last_code, data->username, "FBI-VAN3", data->current_dir
+    #define RP data->last_code, data->username, data->host, data->current_dir
     #define BPROMPT "[%d] %s@%s:%s$ ", RP
     #define ERRORCODE -1
     #define OKCODE 0
@@ -43,11 +43,14 @@ typedef struct data_s {
     char *last_dir;
 } data_t;
 
+/* Data */
 data_t *init_data(char **env);
+char *get_hostname(void);
 void destroy_data(data_t *data);
 
 void pathfinder(data_t *data, char *tampon, char *command);
 
+/* Env */
 env_t *env_to_list(char **env);
 char **list_to_env(env_t *list);
 char *find_in_env(env_t *env, char *key);
@@ -67,6 +70,7 @@ void process_child(data_t *data, char **line);
 
 void my_cd(data_t *data, char **line);
 
+/* Signal */
 void handle_signal(int exitstatus);
 
 #endif
