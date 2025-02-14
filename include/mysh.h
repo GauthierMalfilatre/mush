@@ -76,6 +76,6 @@ void process_child(data_t *data, char **line);
 void my_cd(data_t *data, char **line);
 
 /* Signal */
-void handle_signal(int exitstatus);
+int handle_signal(int exitstatus);
 
 #endif

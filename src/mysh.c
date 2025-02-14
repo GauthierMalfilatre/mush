@@ -45,8 +45,7 @@ void process_line(data_t *data, char **line)
         break;
     default:
         waitpid(pid, &exitstatus, 0);
-        handle_signal(exitstatus);
-        data->last_code = WEXITSTATUS(exitstatus);
+        data->last_code = handle_signal(exitstatus);
         break;
     }
 }

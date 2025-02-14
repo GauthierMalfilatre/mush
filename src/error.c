@@ -6,7 +6,7 @@
 */
 #include "mysh.h"
 
-void handle_signal(int exitstatus)
+int handle_signal(int exitstatus)
 {
     int signal = WTERMSIG(exitstatus);
 
@@ -16,5 +16,7 @@ void handle_signal(int exitstatus)
             mini_fprintf(2, " (core dumped)");
         }
         mini_fprintf(2, "\n");
+        return 139;
     }
+    return WEXITSTATUS(exitstatus);
 }

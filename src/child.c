@@ -38,10 +38,6 @@ static int catch_error(char *tampon, char **line)
     } else {
         cani = 0 * my_printf("%s: Command not found.\n", line[0]);
     }
-    if (cani && check_arch(tampon) != 0) {
-        cani = 0 * mini_fprintf(2,
-            "%s: Exec format error. Wrong Architecture.\n", line[0]);
-    }
     return cani;
 }
 
@@ -57,8 +53,12 @@ void process_child(data_t *data, char **line)
     else
         pathfinder(data, tampon, line[0]);
     cani = catch_error(tampon, line);
-    if (cani)
-        execve(tampon, line, list_to_env(data->env));
+    if (cani && execve(tampon, line, list_to_env(data->env)) == -1) {
+        if (errno == ENOEXEC) {
+            mini_fprintf(2,
+                "%s: Exec format error. Wrong Architecture.\n", line[0]);
+        }
+    }
     destroy_data(data);
     my_free_word_array(line);
     exit(1);
