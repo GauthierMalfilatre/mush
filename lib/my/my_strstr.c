@@ -8,10 +8,10 @@
 
 static int check_out(char *str, char const *to_find, int i, int j)
 {
-    if (j == my_strlen(to_find)) {
+    if (to_find && j == my_strlen(to_find)) {
         return 1;
     }
-    if (str[i] != to_find[j]) {
+    if (str[i] && to_find[j] && str[i] != to_find[j]) {
         return 0;
     }
     return check_out(str, to_find, i + 1, j + 1);

@@ -7,7 +7,7 @@
 #include "mini_printf.h"
 #include <stdarg.h>
 
-int my_strlen(char *str)
+int my_strlenrec(char *str)
 {
     return *str ? 1 + my_strlen(str) : 0;
 }

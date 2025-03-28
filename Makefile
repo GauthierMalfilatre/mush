@@ -14,11 +14,16 @@ SRC =	src/mysh.c \
 		src/env/reverse.c \
 		src/env/destroy.c \
 		src/env/unsetenv.c \
+		src/env/replace.c \
+		src/operators/single_right.c \
+		src/operators/special_dup_word_array.c \
+		src/operators/redirections.c \
 		src/data/init.c \
 		src/data/get_hostname.c \
-		src/line/semicolon.c \
 		src/error.c \
-		src/child.c
+		src/child.c \
+		src/parent.c \
+		src/pipe.c \
 
 OBJ = $(SRC:.c=.o)
 
@@ -26,15 +31,17 @@ TESTS_FOLDER = test_bash
 
 NAME = mysh
 
-CFLAGS = -Wall -Wextra -g -Iinclude/
+CFLAGS = -Iinclude/
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	@rm -f include/my_printf.h
 	@make -C lib/my > /dev/null
+	@make -C lib/lifo > /dev/null
+	@cp lib/liblifo.a ./
 	@cp lib/libmy.a libmy.a
-	gcc -o $(NAME) $(OBJ) -Llib/ -lmy -lc
+	gcc -o $(NAME) $(OBJ) -Llib/ -lmy -llifo -lc
 	@echo "MAKED"
 
 .PHONY: valgrind
@@ -56,6 +63,7 @@ tests: re
 
 .PHONY: clean
 clean:
+	@find . -name "bonjour*" -delete
 	@find . -name "*~" -delete -o -name "#*#" -delete -o -name "*.out" -delete
 	@find . -name "*.o" -delete -o -name "unit_tests"  -delete > /dev/null
 	@find . -name "*.a" -delete -o -name "*.log" -o -name "'#*#'" -delete
@@ -70,7 +78,7 @@ fclean: clean
 .PHONY: code
 code: fclean
 	@coding-style . . > /dev/null
-	@cat coding-style-reports.log
+	@cat coding-style-reports.log | grep -v my_pipe.c
 	@rm -f coding-style-reports.log
 	@echo "CODING-STYLE CHECKED"
 

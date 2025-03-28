@@ -38,13 +38,33 @@ static int catch_error(char *tampon, char **line)
     } else {
         cani = 0 * my_printf("%s: Command not found.\n", line[0]);
     }
+    if (cani && check_arch(tampon) != 0) {
+        cani = 0 * mini_fprintf(2,
+            "%s: Exec format error. Binary file not executable.\n", line[0]);
+    }
     return cani;
 }
 
-void process_child(data_t *data, char **line)
+// Think to optimize the method
+static void exec_it(char *tampon, char **line, char **env)
+{
+    int *fd = get_fds(line);
+    char **temp;
+
+    if (fd && fd[0]) {
+        temp = special_dup_warray(line);
+    }
+    execve(tampon, fd[0] ? temp : line, env);
+    for (int i = 0; i < MAXPIPE; i++) {
+        ifree(temp);
+        close(fd[i]);
+    }
+    return;
+}
+
+void process_child(data_t *data, char **line, char **line2, int is_pipe)
 {
     char tampon[256] = {0};
-    int cani = 1;
 
     if (!line || !line[0])
         exit(127);
@@ -52,14 +72,15 @@ void process_child(data_t *data, char **line)
         my_strcpy(tampon, line[0]);
     else
         pathfinder(data, tampon, line[0]);
-    cani = catch_error(tampon, line);
-    if (cani && execve(tampon, line, list_to_env(data->env)) == -1) {
-        if (errno == ENOEXEC) {
-            mini_fprintf(2,
-                "%s: Exec format error. Wrong Architecture.\n", line[0]);
-        }
+    if (catch_error(tampon, line)) {
+        if (is_pipe == BEFORE || is_pipe == BETWEEN)
+            pipe_before(data);
+        if (is_pipe == AFTER || is_pipe == BETWEEN)
+            pipe_after(data);
+        exec_it(tampon, line, list_to_env(data->env));
     }
     destroy_data(data);
     my_free_word_array(line);
+    my_free_word_array(line2);
     exit(1);
 }

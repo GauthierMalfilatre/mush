@@ -6,6 +6,16 @@
 */
 #include "mysh.h"
 
+int is_line_empty(char *line)
+{
+    for (int i = 0; line[i]; i++) {
+        if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n') {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int handle_signal(int exitstatus)
 {
     int signal = WTERMSIG(exitstatus);

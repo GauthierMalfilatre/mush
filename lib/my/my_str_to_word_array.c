@@ -30,7 +30,7 @@ static int cust_len(char *str)
 {
     int i = 0;
 
-    for (; is_alphanum(str[i]); i++);
+    for (; str[i] && is_alphanum(str[i]); i++);
     return i;
 }
 
@@ -46,8 +46,7 @@ char **my_str_to_word_array(char const *str)
             temp++;
         }
         size = cust_len(temp);
-        dest[i] = malloc(sizeof(char) * (size + 1));
-        my_strncpy(dest[i], temp, size);
+        dest[i] = my_strndup(temp, size);
         temp += size;
     }
     dest[str_word] = (void *) 0;
@@ -59,7 +58,7 @@ void my_free_word_array(char **array)
     if (!array)
         return;
     for (int i = 0; array[i]; i++) {
-        free(array[i]);
+        ifree(array[i]);
     }
-    free(array);
+    ifree(array);
 }

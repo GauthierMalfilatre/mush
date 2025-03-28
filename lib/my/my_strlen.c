@@ -10,8 +10,6 @@ int my_strlen(char const *str)
 {
     int length = 0;
 
-    for (char const *i = str; *i != '\0'; i++) {
-        length++;
-    }
+    for (; str[length]; length++);
     return length;
 }

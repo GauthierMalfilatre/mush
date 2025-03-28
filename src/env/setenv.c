@@ -61,7 +61,7 @@ void add_or_update(env_t **env, char *key, char *value)
 void add_to_env(data_t *data, char **line)
 {
     char *key = line[1];
-    char *value = my_len_word_array(line) > 2 ? line[2] : (char *) 0;
+    char *value = line[2];
 
     if (my_len_word_array(line) > 3) {
         mini_fprintf(2, "setenv: Too many arguments.\n");
